@@ -1,0 +1,55 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-373392560295",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.ec2",
+  "account": "123456789012",
+  "time": "2026-10-18T04:02:11Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAEXAMPLEUSERA",
+      "arn": "arn:aws:iam::123456789012:user/cg-tv2",
+      "accountId": "123456789012",
+      "userName": "cg-tv2"
+    },
+    "eventTime": "2026-10-18T04:02:11Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "StartInstances",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "instancesSet": {
+        "items": [
+          {
+            "instanceId": "i-07c2e9a1f04b3d882"
+          }
+        ]
+      }
+    },
+    "responseElements": {
+      "instancesSet": {
+        "items": [
+          {
+            "instanceId": "i-07c2e9a1f04b3d882",
+            "currentState": {
+              "code": 0,
+              "name": "pending"
+            },
+            "previousState": {
+              "code": 80,
+              "name": "stopped"
+            }
+          }
+        ]
+      }
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}

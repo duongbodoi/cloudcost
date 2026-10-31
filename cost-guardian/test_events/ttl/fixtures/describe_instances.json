@@ -1,0 +1,179 @@
+{
+  "Reservations": [
+    {
+      "Instances": [
+        {
+          "InstanceId": "i-ttl0000expired4h",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T04:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "expired-4h"
+            },
+            {
+              "Key": "TTL",
+              "Value": "4h"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000valid4h00",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T08:30:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "valid-4h"
+            },
+            {
+              "Key": "TTL",
+              "Value": "4h"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000expired30",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T09:20:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "expired-30m"
+            },
+            {
+              "Key": "TTL",
+              "Value": "30m"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000valid2d00",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-17T10:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "valid-2d"
+            },
+            {
+              "Key": "TTL",
+              "Value": "2d"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000uppercase",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T03:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "uppercase"
+            },
+            {
+              "Key": "TTL",
+              "Value": "4H"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000nottltag0",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-01T00:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "no-ttl"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000invalid00",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T01:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "invalid"
+            },
+            {
+              "Key": "TTL",
+              "Value": "4 gio"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000stopped00",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-15T01:00:00+00:00",
+          "State": {
+            "Code": 80,
+            "Name": "stopped"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "stopped"
+            },
+            {
+              "Key": "TTL",
+              "Value": "1h"
+            }
+          ]
+        },
+        {
+          "InstanceId": "i-ttl0000inasg0000",
+          "InstanceType": "t3.micro",
+          "LaunchTime": "2026-10-18T01:00:00+00:00",
+          "State": {
+            "Code": 16,
+            "Name": "running"
+          },
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "web-asg"
+            },
+            {
+              "Key": "TTL",
+              "Value": "1h"
+            },
+            {
+              "Key": "aws:autoscaling:groupName",
+              "Value": "web-asg-group"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

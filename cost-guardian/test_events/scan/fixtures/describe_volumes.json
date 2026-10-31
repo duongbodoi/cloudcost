@@ -1,0 +1,30 @@
+{
+  "Volumes": [
+    {
+      "VolumeId": "vol-0e91aa22bb33cc44d",
+      "Size": 30,
+      "VolumeType": "gp3",
+      "State": "available",
+      "Attachments": [],
+      "Tags": [
+        {
+          "Key": "Owner",
+          "Value": "cg-tv3"
+        }
+      ]
+    },
+    {
+      "VolumeId": "vol-0f00aa11bb22cc33d",
+      "Size": 8,
+      "VolumeType": "gp3",
+      "State": "in-use",
+      "Attachments": [
+        {
+          "InstanceId": "i-0d41f3e7a68c2b915",
+          "State": "attached"
+        }
+      ],
+      "Tags": []
+    }
+  ]
+}

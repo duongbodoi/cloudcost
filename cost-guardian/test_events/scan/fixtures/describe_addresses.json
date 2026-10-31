@@ -1,0 +1,23 @@
+{
+  "Addresses": [
+    {
+      "AllocationId": "eipalloc-0a3f5c7e9b1d24680",
+      "PublicIp": "54.210.11.23",
+      "Domain": "vpc",
+      "Tags": [
+        {
+          "Key": "Owner",
+          "Value": "cg-tv2"
+        }
+      ]
+    },
+    {
+      "AllocationId": "eipalloc-0c1d2e3f4a5b6c7d8",
+      "PublicIp": "3.91.40.7",
+      "Domain": "vpc",
+      "AssociationId": "eipassoc-0123456789abcdef0",
+      "InstanceId": "i-0d41f3e7a68c2b915",
+      "Tags": []
+    }
+  ]
+}

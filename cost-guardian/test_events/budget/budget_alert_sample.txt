@@ -1,0 +1,13 @@
+AWS Budget Notification October 20, 2026
+AWS Account 123456789012
+
+Dear AWS Customer,
+
+You requested that we alert you when the FORECASTED Cost associated with your cost-guardian-monthly budget is greater than $8.00 for the current month. The FORECASTED Cost associated with this budget is $9.40. You can find additional details below and by accessing the AWS Budgets dashboard.
+
+Budget Name: cost-guardian-monthly
+Budget Type: Cost
+Budgeted Amount: $10.00
+Alert Type: FORECASTED
+Alert Threshold: > $8.00
+FORECASTED Amount: $9.40

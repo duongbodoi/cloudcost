@@ -1,0 +1,31 @@
+# Terraform – state và cấu hình riêng (CONVENTIONS mục 10)
+*.tfstate
+*.tfstate.*
+.terraform/
+tfvars.json
+*.tfvars
+*.tfvars.json
+backend.hcl
+crash.log
+
+# Gói Lambda
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Khóa truy cập, biến môi trường
+.env
+*.pem
+credentials
+.aws/
+
+# Hệ điều hành / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,17 @@
+{
+  "Sid": "AllowAWSBudgetsPublish",
+  "Effect": "Allow",
+  "Principal": {
+    "Service": "budgets.amazonaws.com"
+  },
+  "Action": "SNS:Publish",
+  "Resource": "arn:aws:sns:us-east-1:<ACCOUNT_ID>:Cost-Guardian",
+  "Condition": {
+    "StringEquals": {
+      "aws:SourceAccount": "<ACCOUNT_ID>"
+    },
+    "ArnLike": {
+      "aws:SourceArn": "arn:aws:budgets::<ACCOUNT_ID>:*"
+    }
+  }
+}

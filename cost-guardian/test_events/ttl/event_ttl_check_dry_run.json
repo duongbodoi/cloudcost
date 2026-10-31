@@ -1,0 +1,6 @@
+{
+  "source": "cost-guardian.scheduler",
+  "job": "ttl-check",
+  "now": "2026-10-18T10:00:00Z",
+  "dry_run": true
+}

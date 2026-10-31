@@ -1,0 +1,102 @@
+{
+  "DBInstances": [
+    {
+      "DBInstanceIdentifier": "db-ttl-expired",
+      "DBInstanceStatus": "available",
+      "Engine": "mysql",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "2h"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-10-18T07:00:00Z"
+        }
+      ],
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-ttl-expired"
+    },
+    {
+      "DBInstanceIdentifier": "db-ttl-first-seen",
+      "DBInstanceStatus": "available",
+      "Engine": "mysql",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "4h"
+        }
+      ],
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-ttl-first-seen"
+    },
+    {
+      "DBInstanceIdentifier": "db-no-ttl",
+      "DBInstanceStatus": "available",
+      "Engine": "postgres",
+      "TagList": [
+        {
+          "Key": "Owner",
+          "Value": "cg-tv2"
+        }
+      ],
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-no-ttl"
+    },
+    {
+      "DBInstanceIdentifier": "db-ttl-stopped",
+      "DBInstanceStatus": "stopped",
+      "Engine": "mysql",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "1h"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-10-17T01:00:00Z"
+        }
+      ],
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-ttl-stopped"
+    },
+    {
+      "DBInstanceIdentifier": "db-aurora-writer",
+      "DBInstanceStatus": "available",
+      "Engine": "aurora-mysql",
+      "DBClusterIdentifier": "cluster-lab",
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-aurora-writer",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "1h"
+        }
+      ]
+    },
+    {
+      "DBInstanceIdentifier": "db-replica",
+      "DBInstanceStatus": "available",
+      "Engine": "mysql",
+      "ReadReplicaSourceDBInstanceIdentifier": "db-lab-mysql",
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-replica",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "1h"
+        }
+      ]
+    },
+    {
+      "DBInstanceIdentifier": "db-ttl-backing-up",
+      "DBInstanceStatus": "backing-up",
+      "Engine": "mysql",
+      "DBInstanceArn": "arn:aws:rds:us-east-1:123456789012:db:db-ttl-backing-up",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "1h"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-10-18T01:00:00Z"
+        }
+      ]
+    }
+  ]
+}
