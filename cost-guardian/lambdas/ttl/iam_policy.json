@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadAllEnabledRegions",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "ec2:DescribeInstances",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBClusters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StopTaggedEC2OutsideASG",
+      "Effect": "Allow",
+      "Action": "ec2:StopInstances",
+      "Resource": "arn:aws:ec2:*:<ACCOUNT_ID>:instance/*",
+      "Condition": {
+        "Null": {
+          "ec2:ResourceTag/TTL": "false",
+          "ec2:ResourceTag/aws:autoscaling:groupName": "true"
+        }
+      }
+    },
+    {
+      "Sid": "StopTaggedRDS",
+      "Effect": "Allow",
+      "Action": "rds:StopDBInstance",
+      "Resource": "arn:aws:rds:*:<ACCOUNT_ID>:db:*",
+      "Condition": {
+        "Null": {
+          "rds:db-tag/TTL": "false"
+        }
+      }
+    },
+    {
+      "Sid": "StopTaggedAurora",
+      "Effect": "Allow",
+      "Action": "rds:StopDBCluster",
+      "Resource": "arn:aws:rds:*:<ACCOUNT_ID>:cluster:*",
+      "Condition": {
+        "Null": {
+          "rds:cluster-tag/TTL": "false"
+        }
+      }
+    },
+    {
+      "Sid": "MaintainOnlyTTLStart",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": [
+        "arn:aws:rds:*:<ACCOUNT_ID>:db:*",
+        "arn:aws:rds:*:<ACCOUNT_ID>:cluster:*"
+      ],
+      "Condition": {
+        "Null": {
+          "aws:ResourceTag/TTL": "false",
+          "aws:TagKeys": "false"
+        },
+        "ForAllValues:StringEquals": {
+          "aws:TagKeys": [
+            "TTL-Start"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "SendTTLNotifications",
+      "Effect": "Allow",
+      "Action": "sns:Publish",
+      "Resource": "arn:aws:sns:us-east-1:<ACCOUNT_ID>:Cost-Guardian"
+    }
+  ]
+}
