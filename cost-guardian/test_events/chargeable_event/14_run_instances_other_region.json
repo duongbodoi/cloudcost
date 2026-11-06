@@ -1,0 +1,58 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000014",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.ec2",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "ap-southeast-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAEXAMPLEUSERA",
+      "arn": "arn:aws:iam::123456789012:user/cg-tv2",
+      "accountId": "123456789012",
+      "userName": "cg-tv2"
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "RunInstances",
+    "awsRegion": "ap-southeast-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "instanceType": "t3.micro",
+      "instancesSet": {
+        "items": [
+          {
+            "imageId": "ami-0fedcba9876543210",
+            "minCount": 1,
+            "maxCount": 1
+          }
+        ]
+      }
+    },
+    "responseElements": {
+      "instancesSet": {
+        "items": [
+          {
+            "instanceId": "i-0c5e7a9b1d3f02468",
+            "instanceType": "t3.micro",
+            "instanceState": {
+              "code": 0,
+              "name": "pending"
+            },
+            "placement": {
+              "availabilityZone": "ap-southeast-1a"
+            }
+          }
+        ]
+      }
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}

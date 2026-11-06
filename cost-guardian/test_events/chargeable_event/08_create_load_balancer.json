@@ -1,0 +1,52 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000008",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.elasticloadbalancing",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAEXAMPLEUSERA",
+      "arn": "arn:aws:iam::123456789012:user/cg-tv2",
+      "accountId": "123456789012",
+      "userName": "cg-tv2"
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "elasticloadbalancing.amazonaws.com",
+    "eventName": "CreateLoadBalancer",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "name": "lab-alb",
+      "type": "application",
+      "scheme": "internet-facing",
+      "subnets": [
+        "subnet-0a1b2c3d4e5f60718",
+        "subnet-0b2c3d4e5f6071829"
+      ]
+    },
+    "responseElements": {
+      "loadBalancers": [
+        {
+          "loadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/lab-alb/50dc6c495c0c9188",
+          "loadBalancerName": "lab-alb",
+          "type": "application",
+          "scheme": "internet-facing",
+          "state": {
+            "code": "provisioning"
+          }
+        }
+      ]
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012",
+    "apiVersion": "2015-12-01"
+  }
+}

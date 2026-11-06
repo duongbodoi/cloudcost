@@ -26,11 +26,27 @@ Dùng cho **Lambda `cg-chargeable-event`** (tab Test) và **EventBridge rule** (
 | `05_create_db_instance.json` | ✅ | `...: RDS` – `db-lab-mysql` | Sự kiện từ `aws.rds` |
 | `06_start_db_instance.json` | ✅ | `...: RDS (bat lai)` – `db-lab-mysql` | Bật lại RDS |
 | `07_run_instances_by_root.json` | ✅ | `...: EC2` – **2 ID**, người tạo `...:root` | Tạo nhiều máy một lúc; người tạo là root |
+| `08_create_load_balancer.json` | ✅ | `...: Load Balancer (ALB)` – `lab-alb` | ELBv2, gắn tag bằng ARN |
+| `09_create_eks_cluster.json` | ✅ | `...: EKS cluster` – `lab-eks`; `Owner=cg-tv3`, `CreatedBy=assumed-role/DevRole/cg-tv3` | Người tạo là **role** (Owner = tên phiên) |
+| `10_create_eks_nodegroup.json` | ✅ | `...: EKS node group` – `lab-eks/lab-ng` | Giá = `t3.medium` × `desiredSize` 2 |
+| `11_create_cache_cluster.json` | ✅ | `...: ElastiCache` – `lab-redis` | |
+| `12_create_replication_group.json` | ✅ | `...: ElastiCache` – `lab-valkey` | Giá = node × 2 thành viên |
+| `13_create_serverless_cache.json` | ✅ | `...: ElastiCache Serverless` – `lab-serverless` | Ước tính: *không ước tính được* |
+| `14_run_instances_other_region.json` | ✅ | `...: EC2` – `i-0c5e7a9b1d3f02468`, `Region: ap-southeast-1` | Client gắn tag theo Region của sự kiện |
+| `15_run_instances_owner_preset.json` | ✅ | `...: EC2` – chỉ gắn `CreatedBy`, **giữ nguyên `Owner=nhom-11`** | Không ghi đè Owner người dùng tự gắn (tag `Owner` của volume bị bỏ qua) |
 | `neg_01_run_instances_failed.json` | ❌ | Không được gửi | Lệnh lỗi (có `errorCode`) → bị lọc bởi `"errorCode": [{"exists": false}]` |
 | `neg_02_terminate_instances.json` | ❌ | Không được gửi | Xóa máy không cần cảnh báo |
 | `neg_03_describe_instances.json` | ❌ | Không được gửi | Thao tác chỉ xem |
+| `neg_04_run_instances_by_autoscaling.json` | ✅ | **Không** được gửi (Lambda trả `skipped`) | Máy do Auto Scaling tự tạo – lọc trong Lambda, không lọc ở pattern |
+| `neg_05_ecs_create_cluster.json` | ❌ | Không được gửi | `CreateCluster` của **ECS** trùng tên API với EKS |
 
-> File `neg_*` dùng để thử **event pattern** trên EventBridge (phải báo *không khớp*).
+> Các file `08`–`15`, `neg_04`, `neg_05` được dựng theo cấu trúc tài liệu API của AWS (chưa lấy từ CloudTrail thật).
+> Khi có sự kiện thật cùng loại, thay vào để kiểm tra lại.
+>
+> Test trên Lambda bằng các file này sẽ **gắn tag thất bại** (ID giả) – email vẫn được gửi, dòng `Tag đã gắn` ghi lỗi.
+> Muốn xem nội dung email mà không gửi, thêm `"dry_run": true` vào cấp ngoài cùng của sự kiện.
+>
+> File `neg_01`–`neg_03`, `neg_05` dùng để thử **event pattern** trên EventBridge (phải báo *không khớp*).
 > Nếu đem `neg_*` test thẳng vào Lambda thì Lambda vẫn gửi email – vì việc lọc là của EventBridge, không phải của Lambda.
 
 ---

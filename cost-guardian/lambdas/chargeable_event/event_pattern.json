@@ -1,0 +1,29 @@
+{
+  "source": ["aws.ec2", "aws.rds", "aws.elasticloadbalancing", "aws.eks", "aws.elasticache"],
+  "detail-type": ["AWS API Call via CloudTrail"],
+  "detail": {
+    "errorCode": [{ "exists": false }],
+    "$or": [
+      {
+        "eventSource": ["ec2.amazonaws.com"],
+        "eventName": ["RunInstances", "StartInstances", "CreateNatGateway", "AllocateAddress"]
+      },
+      {
+        "eventSource": ["rds.amazonaws.com"],
+        "eventName": ["CreateDBInstance", "StartDBInstance"]
+      },
+      {
+        "eventSource": ["elasticloadbalancing.amazonaws.com"],
+        "eventName": ["CreateLoadBalancer"]
+      },
+      {
+        "eventSource": ["eks.amazonaws.com"],
+        "eventName": ["CreateCluster", "CreateNodegroup"]
+      },
+      {
+        "eventSource": ["elasticache.amazonaws.com"],
+        "eventName": ["CreateCacheCluster", "CreateReplicationGroup", "CreateServerlessCache"]
+      }
+    ]
+  }
+}
