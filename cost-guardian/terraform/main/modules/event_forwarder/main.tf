@@ -1,0 +1,1 @@
+# TODO (Nguyễn Tùng Dương – hạng mục 25): template rule chuyển tiếp + IAM role PutEvents, triển khai bằng StackSet tới mọi Region trừ home_region

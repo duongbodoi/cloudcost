@@ -1,0 +1,1 @@
+# TODO (Nguyễn Xuân Hải – hạng mục 26): Lambda Scan (dùng ../lambda_function, kèm notify.py + pricing.py), IAM chỉ đọc, lịch EventBridge Scheduler theo daily_report_time
