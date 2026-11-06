@@ -1,0 +1,505 @@
+{
+  "source": "cost-guardian.scheduler",
+  "job": "daily-scan",
+  "dry_run": true,
+  "fixture_regions": {
+    "us-east-1": {
+      "Addresses": [
+        {
+          "AllocationId": "eipalloc-0a3f5c7e9b1d24680",
+          "PublicIp": "54.210.11.23",
+          "Domain": "vpc",
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv2"
+            }
+          ]
+        },
+        {
+          "AllocationId": "eipalloc-0c1d2e3f4a5b6c7d8",
+          "PublicIp": "3.91.40.7",
+          "Domain": "vpc",
+          "AssociationId": "eipassoc-0123456789abcdef0",
+          "InstanceId": "i-0d41f3e7a68c2b915",
+          "Tags": []
+        }
+      ],
+      "DBInstances": [
+        {
+          "DBInstanceIdentifier": "db-lab-mysql",
+          "DBInstanceClass": "db.t3.micro",
+          "Engine": "mysql",
+          "DBInstanceStatus": "available",
+          "InstanceCreateTime": "2026-10-18T06:10:05+00:00",
+          "TagList": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv2"
+            },
+            {
+              "Key": "TTL",
+              "Value": "1d"
+            }
+          ]
+        },
+        {
+          "DBInstanceIdentifier": "db-old-pg",
+          "DBInstanceClass": "db.t3.micro",
+          "Engine": "postgres",
+          "DBInstanceStatus": "stopped",
+          "InstanceCreateTime": "2026-10-05T06:10:05+00:00",
+          "TagList": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv4"
+            }
+          ]
+        }
+      ],
+      "DBSnapshots": [
+        {
+          "DBSnapshotIdentifier": "db-lab-final-backup",
+          "DBInstanceIdentifier": "db-lab-mysql",
+          "Engine": "mysql",
+          "AllocatedStorage": 20,
+          "Status": "available",
+          "SnapshotType": "manual",
+          "SnapshotCreateTime": "2026-07-03T08:00:00+00:00",
+          "TagList": []
+        },
+        {
+          "DBSnapshotIdentifier": "rds:db-lab-mysql-2026-06-01",
+          "DBInstanceIdentifier": "db-lab-mysql",
+          "Engine": "mysql",
+          "AllocatedStorage": 20,
+          "Status": "available",
+          "SnapshotType": "automated",
+          "SnapshotCreateTime": "2026-06-01T08:00:00+00:00",
+          "TagList": []
+        }
+      ],
+      "Images": [
+        {
+          "ImageId": "ami-0123456789abcdef0",
+          "BlockDeviceMappings": [
+            {
+              "DeviceName": "/dev/xvda",
+              "Ebs": {
+                "SnapshotId": "snap-0usedbyami0000002"
+              }
+            }
+          ]
+        }
+      ],
+      "Reservations": [
+        {
+          "Instances": [
+            {
+              "InstanceId": "i-0d41f3e7a68c2b915",
+              "InstanceType": "t3.small",
+              "LaunchTime": "2026-10-17T02:00:00+00:00",
+              "State": {
+                "Code": 16,
+                "Name": "running"
+              },
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "web-test"
+                },
+                {
+                  "Key": "Owner",
+                  "Value": "cg-tv2"
+                }
+              ]
+            },
+            {
+              "InstanceId": "i-07c2e9a1f04b3d882",
+              "InstanceType": "t3.micro",
+              "LaunchTime": "2026-10-18T01:00:00+00:00",
+              "State": {
+                "Code": 16,
+                "Name": "running"
+              },
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "lab"
+                },
+                {
+                  "Key": "Owner",
+                  "Value": "cg-tv3"
+                },
+                {
+                  "Key": "TTL",
+                  "Value": "4h"
+                }
+              ]
+            },
+            {
+              "InstanceId": "i-0bb00cc11dd22ee33",
+              "InstanceType": "t3.micro",
+              "LaunchTime": "2026-10-10T01:00:00+00:00",
+              "State": {
+                "Code": 80,
+                "Name": "stopped"
+              },
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "old-box"
+                },
+                {
+                  "Key": "Owner",
+                  "Value": "cg-tv4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "LoadBalancers": [
+        {
+          "LoadBalancerName": "alb-demo",
+          "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/alb-demo/50dc6c495c0c9188",
+          "Type": "application",
+          "Scheme": "internet-facing",
+          "State": {
+            "Code": "active"
+          },
+          "CreatedTime": "2026-10-20T03:00:00+00:00"
+        },
+        {
+          "LoadBalancerName": "alb-new",
+          "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:123456789012:loadbalancer/app/alb-new/0a1b2c3d4e5f6071",
+          "Type": "application",
+          "Scheme": "internet-facing",
+          "State": {
+            "Code": "provisioning"
+          },
+          "CreatedTime": "2026-11-05T03:00:00+00:00"
+        }
+      ],
+      "NatGateways": [
+        {
+          "NatGatewayId": "nat-09f1ab82c9e4d1a7b",
+          "State": "available",
+          "CreateTime": "2026-10-18T05:30:00+00:00",
+          "SubnetId": "subnet-0a1b2c3d4e5f60718",
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv2"
+            }
+          ]
+        },
+        {
+          "NatGatewayId": "nat-0deleted000000001",
+          "State": "deleted",
+          "CreateTime": "2026-10-11T05:30:00+00:00",
+          "SubnetId": "subnet-0a1b2c3d4e5f60718",
+          "Tags": []
+        }
+      ],
+      "Snapshots": [
+        {
+          "SnapshotId": "snap-0a1b2c3d4e5f60718",
+          "VolumeSize": 50,
+          "StartTime": "2026-06-12T08:00:00+00:00",
+          "State": "completed",
+          "Tags": []
+        },
+        {
+          "SnapshotId": "snap-0recent00000000001",
+          "VolumeSize": 8,
+          "StartTime": "2026-11-01T08:00:00+00:00",
+          "State": "completed",
+          "Tags": []
+        },
+        {
+          "SnapshotId": "snap-0usedbyami0000002",
+          "VolumeSize": 8,
+          "StartTime": "2026-05-01T08:00:00+00:00",
+          "State": "completed",
+          "Tags": []
+        }
+      ],
+      "Volumes": [
+        {
+          "VolumeId": "vol-0e91aa22bb33cc44d",
+          "Size": 30,
+          "VolumeType": "gp3",
+          "State": "available",
+          "Attachments": [],
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv3"
+            }
+          ]
+        },
+        {
+          "VolumeId": "vol-0f00aa11bb22cc33d",
+          "Size": 8,
+          "VolumeType": "gp3",
+          "State": "in-use",
+          "Attachments": [
+            {
+              "InstanceId": "i-0d41f3e7a68c2b915",
+              "State": "attached"
+            }
+          ],
+          "Tags": []
+        }
+      ],
+      "VpcEndpoints": [
+        {
+          "VpcEndpointId": "vpce-0a1b2c3d4e5f60718",
+          "VpcEndpointType": "Interface",
+          "State": "available",
+          "ServiceName": "com.amazonaws.us-east-1.ssm",
+          "SubnetIds": [
+            "subnet-0a1b2c3d4e5f60718",
+            "subnet-0b2c3d4e5f6071829"
+          ],
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv2"
+            }
+          ]
+        },
+        {
+          "VpcEndpointId": "vpce-0gateway00000000a",
+          "VpcEndpointType": "Gateway",
+          "State": "available",
+          "ServiceName": "com.amazonaws.us-east-1.s3",
+          "SubnetIds": [],
+          "Tags": []
+        }
+      ],
+      "CpuDailyAverages": {
+        "i-0d41f3e7a68c2b915": [
+          1.2,
+          1.8,
+          2.4,
+          1.5,
+          1.9,
+          2.0,
+          1.8
+        ],
+        "i-07c2e9a1f04b3d882": [
+          3.0,
+          42.0,
+          55.0,
+          30.0,
+          2.0,
+          60.0,
+          48.0
+        ]
+      }
+    },
+    "ap-southeast-1": {
+      "Reservations": [
+        {
+          "Instances": [
+            {
+              "InstanceId": "i-0aa11bb22cc33dd44",
+              "InstanceType": "t3.micro",
+              "LaunchTime": "2026-10-25T03:00:00+00:00",
+              "State": {
+                "Code": 16,
+                "Name": "running"
+              },
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "sg-lab"
+                },
+                {
+                  "Key": "Owner",
+                  "Value": "cg-tv4"
+                },
+                {
+                  "Key": "TTL",
+                  "Value": "2h"
+                }
+              ]
+            },
+            {
+              "InstanceId": "i-0dd44ee55ff66aa77",
+              "InstanceType": "t3.small",
+              "LaunchTime": "2026-10-12T03:00:00+00:00",
+              "State": {
+                "Code": 80,
+                "Name": "stopped"
+              },
+              "Tags": [
+                {
+                  "Key": "Owner",
+                  "Value": "cg-tv4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "NatGateways": [
+        {
+          "NatGatewayId": "nat-0ap5e0a0b1c2d3e4f",
+          "State": "available",
+          "CreateTime": "2026-10-28T05:30:00+00:00",
+          "SubnetId": "subnet-0b2c3d4e5f6071829",
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv3"
+            }
+          ]
+        },
+        {
+          "NatGatewayId": "nat-0sg0deleted0000002",
+          "State": "deleted",
+          "CreateTime": "2026-10-02T05:30:00+00:00",
+          "SubnetId": "subnet-0b2c3d4e5f6071829",
+          "Tags": []
+        }
+      ],
+      "Volumes": [
+        {
+          "VolumeId": "vol-0ap5e0a0b1c2d3e4f",
+          "Size": 1,
+          "VolumeType": "gp3",
+          "State": "available",
+          "CreateTime": "2026-11-03T04:00:00+00:00",
+          "Attachments": [],
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv2"
+            }
+          ]
+        },
+        {
+          "VolumeId": "vol-0sg0inuse000000003",
+          "Size": 8,
+          "VolumeType": "gp3",
+          "State": "in-use",
+          "Attachments": [
+            {
+              "InstanceId": "i-0aa11bb22cc33dd44",
+              "State": "attached"
+            }
+          ],
+          "Tags": []
+        }
+      ],
+      "CpuDailyAverages": {
+        "i-0aa11bb22cc33dd44": [
+          0.8,
+          1.1,
+          0.9,
+          1.0,
+          1.2,
+          0.7,
+          0.9
+        ]
+      }
+    },
+    "eu-west-1": {
+      "LoadBalancers": [
+        {
+          "LoadBalancerName": "alb-eu-ok",
+          "LoadBalancerArn": "arn:aws:elasticloadbalancing:eu-west-1:123456789012:loadbalancer/app/alb-eu-ok/73e2d6bc24d8a067",
+          "Type": "application",
+          "Scheme": "internet-facing",
+          "State": {
+            "Code": "active"
+          },
+          "CreatedTime": "2026-10-15T03:00:00+00:00"
+        }
+      ],
+      "TargetGroups": [
+        {
+          "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-1:123456789012:targetgroup/tg-eu-web/6d0ecf831eec9f09",
+          "TargetGroupName": "tg-eu-web",
+          "LoadBalancerArns": [
+            "arn:aws:elasticloadbalancing:eu-west-1:123456789012:loadbalancer/app/alb-eu-ok/73e2d6bc24d8a067"
+          ]
+        }
+      ],
+      "TargetHealth": {
+        "arn:aws:elasticloadbalancing:eu-west-1:123456789012:targetgroup/tg-eu-web/6d0ecf831eec9f09": [
+          {
+            "Target": {
+              "Id": "i-0eu11aa22bb33cc44",
+              "Port": 80
+            },
+            "TargetHealth": {
+              "State": "healthy"
+            }
+          },
+          {
+            "Target": {
+              "Id": "i-0eu55dd66ee77ff88",
+              "Port": 80
+            },
+            "TargetHealth": {
+              "State": "healthy"
+            }
+          }
+        ]
+      },
+      "VpcEndpoints": [
+        {
+          "VpcEndpointId": "vpce-0eu1interface00001",
+          "VpcEndpointType": "Interface",
+          "State": "available",
+          "ServiceName": "com.amazonaws.eu-west-1.secretsmanager",
+          "SubnetIds": [
+            "subnet-0e1",
+            "subnet-0e2",
+            "subnet-0e3"
+          ],
+          "Tags": [
+            {
+              "Key": "Owner",
+              "Value": "cg-tv3"
+            }
+          ]
+        }
+      ],
+      "Snapshots": [
+        {
+          "SnapshotId": "snap-0eu1old00000000001",
+          "VolumeSize": 100,
+          "StartTime": "2026-03-10T08:00:00+00:00",
+          "State": "completed",
+          "Tags": []
+        },
+        {
+          "SnapshotId": "snap-0eu1usedbyami00002",
+          "VolumeSize": 8,
+          "StartTime": "2026-02-01T08:00:00+00:00",
+          "State": "completed",
+          "Tags": []
+        }
+      ],
+      "Images": [
+        {
+          "ImageId": "ami-0eu1111111111111a",
+          "BlockDeviceMappings": [
+            {
+              "DeviceName": "/dev/xvda",
+              "Ebs": {
+                "SnapshotId": "snap-0eu1usedbyami00002"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ap-northeast-1": {}
+  }
+}

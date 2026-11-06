@@ -15,15 +15,20 @@ Các loại tài nguyên hỗ trợ và tham số cần truyền:
 
     | resource_type | tham số bắt buộc            | tham số tùy chọn                     |
     |---------------|-----------------------------|--------------------------------------|
-    | ec2           | instance_type               | count                                |
+    | ec2           | instance_type               | count, platform (vd "Windows")       |
     | rds           | instance_class              | engine (mặc định mysql), multi_az    |
     | nat           | –                           | count                                |
     | eip           | –                           | count                                |
-    | alb, nlb      | –                           | count                                |
+    | alb, nlb, gwlb| –                           | count                                |
+    | vpce          | –                           | count (= số AZ/subnet của endpoint)  |
     | eks           | –                           | count                                |
     | elasticache   | node_type                   | engine (mặc định redis), count       |
     | ebs           | size_gb                     | volume_type (mặc định gp3)           |
-    | snapshot      | size_gb                     |                                      |
+    | snapshot      | size_gb                     | (snapshot EBS)                       |
+    | rds_snapshot  | size_gb                     | (snapshot RDS thủ công / cluster)    |
+
+    platform của ec2 lấy từ PlatformDetails của EC2 (mặc định "Linux/UNIX"). Hệ điều hành có
+    kèm SQL Server chưa hỗ trợ -> trả None.
 
 Quy tắc:
   - Lấy giá On-Demand. Tháng = giờ × 730.
@@ -61,6 +66,11 @@ RDS_ENGINES = {
     "aurora-postgresql": "Aurora PostgreSQL",
 }
 CACHE_ENGINES = {"redis": "Redis", "valkey": "Valkey", "memcached": "Memcached"}
+LB_FAMILIES = {
+    "alb": "Load Balancer-Application",
+    "nlb": "Load Balancer-Network",
+    "gwlb": "Load Balancer-Gateway",
+}
 
 _pricing = None
 _cache = {}
@@ -133,14 +143,33 @@ def lookup_price(service_code, filters, usagetype_endswith=None):
 
 
 # ----------------------------------------------------------------------- ước tính theo loại
+def _os_name(platform):
+    """PlatformDetails của EC2 -> giá trị operatingSystem của Price List; None nếu chưa hỗ trợ."""
+    p = platform or "Linux/UNIX"
+    if "SQL" in p:
+        return None                      # có kèm SQL Server: bộ lọc preInstalledSw khác, chưa hỗ trợ
+    if "Windows" in p:
+        return "Windows"
+    if "Red Hat" in p:
+        return "RHEL"
+    if "SUSE" in p:
+        return "SUSE"
+    if "Ubuntu Pro" in p:
+        return "Ubuntu Pro"
+    return "Linux"
+
+
 def _query(resource_type, region, attrs):
     """Trả về (service_code, filters, usagetype_endswith) cho từng loại tài nguyên, hoặc None."""
     rt = resource_type.lower()
     if rt == "ec2":
+        os_name = _os_name(attrs.get("platform"))
+        if os_name is None:
+            return None
         return "AmazonEC2", {
             "regionCode": region,
             "instanceType": attrs["instance_type"],
-            "operatingSystem": "Linux",
+            "operatingSystem": os_name,
             "tenancy": "Shared",
             "preInstalledSw": "NA",
             "capacitystatus": "Used",
@@ -157,9 +186,11 @@ def _query(resource_type, region, attrs):
         return "AmazonEC2", {"regionCode": region, "productFamily": "NAT Gateway"}, "NatGateway-Hours"
     if rt == "eip":
         return "AmazonVPC", {"regionCode": region}, "PublicIPv4:IdleAddress"
-    if rt in ("alb", "nlb"):
-        family = "Load Balancer-Application" if rt == "alb" else "Load Balancer-Network"
-        return "AmazonEC2", {"regionCode": region, "productFamily": family}, "LoadBalancerUsage"
+    if rt in LB_FAMILIES:
+        return "AmazonEC2", {
+            "regionCode": region, "productFamily": LB_FAMILIES[rt]}, "LoadBalancerUsage"
+    if rt == "vpce":     # Interface Endpoint: giá theo giờ cho MỖI AZ -> truyền count = số AZ
+        return "AmazonVPC", {"regionCode": region, "productFamily": "VpcEndpoint"}, "VpcEndpoint-Hours"
     if rt == "eks":
         return "AmazonEKS", {"regionCode": region}, "AmazonEKS-Hours:perCluster"
     if rt == "elasticache":
@@ -174,6 +205,8 @@ def _query(resource_type, region, attrs):
             "volumeApiName": attrs.get("volume_type", "gp3")}, None
     if rt == "snapshot":
         return "AmazonEC2", {"regionCode": region, "productFamily": "Storage Snapshot"}, "EBS:SnapshotUsage"
+    if rt == "rds_snapshot":
+        return "AmazonRDS", {"regionCode": region, "productFamily": "Storage Snapshot"}, "ChargedBackupUsage"
     return None
 
 
