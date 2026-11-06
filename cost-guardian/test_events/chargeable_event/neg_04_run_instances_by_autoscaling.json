@@ -1,0 +1,58 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000104",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.ec2",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "AssumedRole",
+      "principalId": "AROAEXAMPLEASG:AutoScaling",
+      "arn": "arn:aws:sts::123456789012:assumed-role/AWSServiceRoleForAutoScaling/AutoScaling",
+      "accountId": "123456789012",
+      "invokedBy": "autoscaling.amazonaws.com",
+      "sessionContext": {
+        "sessionIssuer": {
+          "type": "Role",
+          "userName": "AWSServiceRoleForAutoScaling",
+          "arn": "arn:aws:iam::123456789012:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
+        }
+      }
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "ec2.amazonaws.com",
+    "eventName": "RunInstances",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "autoscaling.amazonaws.com",
+    "userAgent": "autoscaling.amazonaws.com",
+    "requestParameters": {
+      "instanceType": "t3.medium",
+      "instancesSet": {
+        "items": [
+          {
+            "imageId": "ami-0abcdef1234567890",
+            "minCount": 1,
+            "maxCount": 1
+          }
+        ]
+      }
+    },
+    "responseElements": {
+      "instancesSet": {
+        "items": [
+          {
+            "instanceId": "i-0a9b8c7d6e5f40312",
+            "instanceType": "t3.medium"
+          }
+        ]
+      }
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}

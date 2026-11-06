@@ -1,0 +1,70 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000010",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.eks",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "AssumedRole",
+      "principalId": "AROAEXAMPLEROLE:cg-tv3",
+      "arn": "arn:aws:sts::123456789012:assumed-role/DevRole/cg-tv3",
+      "accountId": "123456789012",
+      "sessionContext": {
+        "sessionIssuer": {
+          "type": "Role",
+          "principalId": "AROAEXAMPLEROLE",
+          "arn": "arn:aws:iam::123456789012:role/DevRole",
+          "accountId": "123456789012",
+          "userName": "DevRole"
+        },
+        "attributes": {
+          "creationDate": "2026-11-02T01:00:00Z",
+          "mfaAuthenticated": "false"
+        }
+      }
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "eks.amazonaws.com",
+    "eventName": "CreateNodegroup",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "name": "lab-eks",
+      "nodegroupName": "lab-ng",
+      "instanceTypes": [
+        "t3.medium"
+      ],
+      "scalingConfig": {
+        "minSize": 1,
+        "maxSize": 3,
+        "desiredSize": 2
+      },
+      "nodeRole": "arn:aws:iam::123456789012:role/eks-node-role"
+    },
+    "responseElements": {
+      "nodegroup": {
+        "nodegroupName": "lab-ng",
+        "clusterName": "lab-eks",
+        "nodegroupArn": "arn:aws:eks:us-east-1:123456789012:nodegroup/lab-eks/lab-ng/4ec5f1e2-7a3b-4c1d-9e8f-0a1b2c3d4e5f",
+        "instanceTypes": [
+          "t3.medium"
+        ],
+        "status": "CREATING",
+        "scalingConfig": {
+          "minSize": 1,
+          "maxSize": 3,
+          "desiredSize": 2
+        }
+      }
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}

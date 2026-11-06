@@ -1,0 +1,60 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000009",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.eks",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "AssumedRole",
+      "principalId": "AROAEXAMPLEROLE:cg-tv3",
+      "arn": "arn:aws:sts::123456789012:assumed-role/DevRole/cg-tv3",
+      "accountId": "123456789012",
+      "sessionContext": {
+        "sessionIssuer": {
+          "type": "Role",
+          "principalId": "AROAEXAMPLEROLE",
+          "arn": "arn:aws:iam::123456789012:role/DevRole",
+          "accountId": "123456789012",
+          "userName": "DevRole"
+        },
+        "attributes": {
+          "creationDate": "2026-11-02T01:00:00Z",
+          "mfaAuthenticated": "false"
+        }
+      }
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "eks.amazonaws.com",
+    "eventName": "CreateCluster",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "name": "lab-eks",
+      "version": "1.31",
+      "roleArn": "arn:aws:iam::123456789012:role/eks-cluster-role",
+      "resourcesVpcConfig": {
+        "subnetIds": [
+          "subnet-0a1b2c3d4e5f60718",
+          "subnet-0b2c3d4e5f6071829"
+        ]
+      }
+    },
+    "responseElements": {
+      "cluster": {
+        "name": "lab-eks",
+        "arn": "arn:aws:eks:us-east-1:123456789012:cluster/lab-eks",
+        "version": "1.31",
+        "status": "CREATING"
+      }
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}
