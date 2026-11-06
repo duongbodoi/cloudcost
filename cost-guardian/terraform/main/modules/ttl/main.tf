@@ -1,0 +1,1 @@
+# TODO (Trần Mạnh Chiến – hạng mục 27): Lambda TTL (dùng ../lambda_function, kèm notify.py), IAM đọc + dừng có điều kiện tag TTL, lịch rate theo check_interval_minutes
