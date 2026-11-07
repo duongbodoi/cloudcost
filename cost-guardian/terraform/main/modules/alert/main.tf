@@ -1,0 +1,1 @@
+# TODO (Ngô Xuân Hậu – hạng mục 24): CloudTrail đa Region + S3 log, EventBridge rule, Lambda (dùng ../lambda_function), quyền cho EventBridge gọi Lambda

@@ -1,0 +1,9 @@
+variable "name_prefix" { type = string }
+variable "topic_arn" { type = string }
+variable "lambdas_dir" { type = string }
+variable "scheduler_role_arn" { type = string }
+variable "monitor_all_regions" { type = bool }
+variable "daily_report_time" { type = string }
+variable "snapshot_age_days" { type = number }
+variable "idle_cpu_threshold" { type = number }
+variable "idle_days" { type = number }

@@ -1,0 +1,43 @@
+{
+  "version": "0",
+  "id": "6f1a2b3c-0000-4000-8000-900000000011",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.elasticache",
+  "account": "123456789012",
+  "time": "2026-11-02T03:00:00Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.09",
+    "userIdentity": {
+      "type": "IAMUser",
+      "principalId": "AIDAEXAMPLEUSERA",
+      "arn": "arn:aws:iam::123456789012:user/cg-tv2",
+      "accountId": "123456789012",
+      "userName": "cg-tv2"
+    },
+    "eventTime": "2026-11-02T03:00:00Z",
+    "eventSource": "elasticache.amazonaws.com",
+    "eventName": "CreateCacheCluster",
+    "awsRegion": "us-east-1",
+    "sourceIPAddress": "203.0.113.25",
+    "userAgent": "console.amazonaws.com",
+    "requestParameters": {
+      "cacheClusterId": "lab-redis",
+      "cacheNodeType": "cache.t3.micro",
+      "engine": "redis",
+      "numCacheNodes": 1
+    },
+    "responseElements": {
+      "cacheClusterId": "lab-redis",
+      "cacheNodeType": "cache.t3.micro",
+      "engine": "redis",
+      "numCacheNodes": 1,
+      "cacheClusterStatus": "creating",
+      "aRN": "arn:aws:elasticache:us-east-1:123456789012:cluster:lab-redis"
+    },
+    "eventType": "AwsApiCall",
+    "managementEvent": true,
+    "recipientAccountId": "123456789012"
+  }
+}
