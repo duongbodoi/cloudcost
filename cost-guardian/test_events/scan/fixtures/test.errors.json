@@ -1,0 +1,65 @@
+
+{
+  "source": "cost-guardian.scheduler",
+  "job": "daily-scan",
+  "dry_run": true,
+  "fixture_regions": {
+    "us-east-1": {
+      "Reservations": [
+        {
+          "Instances": [
+            {
+              "InstanceId": "i-test-error-001",
+              "State": {
+                "Name": "running"
+              }
+            }
+          ]
+        }
+      ],
+      "Addresses": [
+        {
+          "AllocationId": "eipalloc-test-us-001",
+          "PublicIp": "54.210.11.23",
+          "Domain": "vpc",
+          "Tags": []
+        }
+      ]
+    },
+    "ap-southeast-1": {
+      "DBInstances": [
+        {
+          "DBInstanceIdentifier": "db-test-error",
+          "DBInstanceStatus": "available",
+          "Engine": "mysql"
+        }
+      ],
+      "Addresses": [
+        {
+          "AllocationId": "eipalloc-test-sg-001",
+          "PublicIp": "13.229.100.50",
+          "Domain": "vpc",
+          "Tags": []
+        }
+      ]
+    },
+    "ap-northeast-1": {
+      "Volumes": [
+        {
+          "VolumeId": "vol-test-error-001",
+          "State": "available",
+          "Size": 20,
+          "Tags": []
+        }
+      ],
+      "Addresses": [
+        {
+          "AllocationId": "eipalloc-test-jp-001",
+          "PublicIp": "18.180.10.20",
+          "Domain": "vpc",
+          "Tags": []
+        }
+      ]
+    }
+  }
+}

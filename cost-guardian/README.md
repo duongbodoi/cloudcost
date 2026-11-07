@@ -68,7 +68,7 @@ vì thay đổi ảnh hưởng cả 3 Lambda.
 
 ## Quy trình làm việc
 
-1. Tạo nhánh từ `main`, tên tự đặt.
+1. Tạo nhánh từ   `, tên tự đặt.
 2. Code + thêm sự kiện mẫu / fixture + chạy test.
 3. Tạo Pull Request, điền checklist trong mẫu PR.
 4. Nhóm trưởng review rồi gộp vào `main`.
