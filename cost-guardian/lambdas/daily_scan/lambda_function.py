@@ -43,7 +43,8 @@ MAX_BODY_BYTES = 240_000  # SNS giới hạn 256 KB
 # Thứ tự mục trong từng Region / trong phần tóm tắt
 SECTION_ORDER = ["EC2", "RDS", "NAT", "LB", "VPCE", "EIP", "EBS", "IDLE", "SNAP"]
 SUMMARY_ORDER = ["EC2", "RDS", "NAT", "LB", "VPCE", "EIP", "EBS", "SNAP", "IDLE"]
-COST_SECTIONS = {"EC2", "RDS", "NAT", "LB", "VPCE", "EIP", "EBS", "SNAP"}
+COST_SECTIONS = {"EC2", "RDS", "NAT", "LB", "VPCE", "EIP", "EBS", "SNAP"}   # mục nào cũng ghi giá từng dòng
+RUNNING_SECTIONS = {"EC2", "RDS", "NAT", "LB", "VPCE"}   # chỉ các mục này được cộng vào dòng tổng
 LB_PRICE_KEY = {"application": "alb", "network": "nlb", "gateway": "gwlb"}  # loại LB -> pricing.py
 
 
@@ -126,7 +127,6 @@ RESPONSE_KEYS = {   # tên API -> khóa chứa danh sách trong phản hồi c�
     "describe_vpc_endpoints": "VpcEndpoints",
     "describe_snapshots": "Snapshots",
     "describe_db_snapshots": "DBSnapshots",
-    "describe_db_cluster_snapshots": "DBClusterSnapshots",
 }
 # Khóa nhận diện event là một file mẫu dán thẳng (vd nguyên nội dung describe_db_instances.json)
 FIXTURE_KEYS = set(RESPONSE_KEYS.values()) | {
@@ -184,9 +184,12 @@ class FixtureClient:
     def describe_target_health(self, TargetGroupArn=None, **kwargs):
         return {"TargetHealthDescriptions": self.data.get("TargetHealth", {}).get(TargetGroupArn, [])}
 
-    def get_metric_statistics(self, Dimensions=None, **kwargs):
-        values = self.data.get("CpuDailyAverages", {}).get(Dimensions[0]["Value"], [])
-        return {"Datapoints": [{"Average": v} for v in values]}
+    def get_metric_data(self, MetricDataQueries=None, **kwargs):
+        query = MetricDataQueries[0]
+        instance_id = query["MetricStat"]["Metric"]["Dimensions"][0]["Value"]
+        values = self.data.get("CpuDailyAverages", {}).get(instance_id, [])
+        return {"MetricDataResults": [{"Id": query["Id"], "Values": list(values),
+                                       "Timestamps": [], "StatusCode": "Complete"}]}
 
 
 def is_raw_fixture(event):
@@ -255,17 +258,24 @@ def cpu_idle_text(cw, inst, now_utc):
     launch = inst.get("LaunchTime")
     if launch and now_utc - launch < timedelta(days=IDLE_DAYS):
         return None  # máy mới, chưa đủ dữ liệu
-    resp = cw.get_metric_statistics(
-        Namespace="AWS/EC2", MetricName="CPUUtilization",
-        Dimensions=[{"Name": "InstanceId", "Value": inst["InstanceId"]}],
-        StartTime=now_utc - timedelta(days=IDLE_DAYS), EndTime=now_utc,
-        Period=86400, Statistics=["Average"])
-    points = resp.get("Datapoints", [])
+    resp = cw.get_metric_data(           # quyền cloudwatch:GetMetricData
+        MetricDataQueries=[{
+            "Id": "cpu",
+            "MetricStat": {
+                "Metric": {"Namespace": "AWS/EC2", "MetricName": "CPUUtilization",
+                           "Dimensions": [{"Name": "InstanceId", "Value": inst["InstanceId"]}]},
+                "Period": 86400,         # trung bình theo từng ngày
+                "Stat": "Average",
+            },
+            "ReturnData": True,
+        }],
+        StartTime=now_utc - timedelta(days=IDLE_DAYS), EndTime=now_utc)
+    points = [v for r in resp.get("MetricDataResults", []) for v in r.get("Values", [])]
     if len(points) < IDLE_DAYS:          # chưa đủ số liệu cho từng ngày
         return None
-    if max(p["Average"] for p in points) >= IDLE_CPU_THRESHOLD:
+    if max(points) >= IDLE_CPU_THRESHOLD:
         return None                      # có ít nhất một ngày CPU không thấp
-    avg = sum(p["Average"] for p in points) / len(points)
+    avg = sum(points) / len(points)
     return f"CPU trung bình {avg:.1f}".replace(".", ",") + f"% trong {IDLE_DAYS} ngày qua"
 
 
@@ -455,22 +465,6 @@ def scan_rds_snapshots(region, errors):
                 "SNAP", f"{s['DBSnapshotIdentifier']} (RDS, thủ công)  {size} GiB  "
                         f"tạo {date_text(created)}",
                 estimate("rds_snapshot", region, size_gb=size)))
-    try:  # snapshot cluster Aurora
-        pages = rds.get_paginator("describe_db_cluster_snapshots").paginate(SnapshotType="manual")
-        for page in pages:
-            for s in page["DBClusterSnapshots"]:
-                created = s.get("SnapshotCreateTime")
-                if not created or created > cutoff or s.get("Status") != "available":
-                    continue
-                if s.get("SnapshotType", "manual") != "manual":
-                    continue
-                size = s.get("AllocatedStorage", 0)
-                out.append(item(
-                    "SNAP", f"{s['DBClusterSnapshotIdentifier']} (RDS cluster, thủ công)  "
-                            f"{size} GiB  tạo {date_text(created)}",
-                    estimate("rds_snapshot", region, size_gb=size)))
-    except Exception as e:
-        errors.append(f"{region} / Snapshot RDS (cluster): {type(e).__name__}: {e}")
     return out
 
 
@@ -549,9 +543,9 @@ def build_report(findings, errors, n_regions, fixture=False):
     # "Có thể đang bị bỏ quên" chỉ là cảnh báo trên EC2 đã đếm, không đếm lại thành tài nguyên mới
     total = sum(n for sec, n in counts.items() if sec != "IDLE")
 
-    priced = [it for by in findings.values() for sec in COST_SECTIONS
+    priced = [it for by in findings.values() for sec in RUNNING_SECTIONS
               for it in by.get(sec, []) if it["est"]]
-    n_cost_items = sum(counts[s] for s in COST_SECTIONS)
+    n_cost_items = sum(counts[s] for s in RUNNING_SECTIONS)
     sum_m = sum(it["est"]["monthly"] for it in priced)
     sum_h = sum(it["est"]["hourly"] for it in priced)
 
@@ -567,12 +561,17 @@ def build_report(findings, errors, n_regions, fixture=False):
                      f"snapshot cũ hơn {SNAPSHOT_AGE_DAYS} ngày).")
         lines.append("")
     else:
-        cost_txt = cost_text({"monthly": sum_m})
-        if len(priced) < n_cost_items:
-            cost_txt += f" (chưa tính được giá {n_cost_items - len(priced)} mục)"
+        if n_cost_items == 0:
+            cost_txt = "0 USD/tháng"
+        elif not priced:
+            cost_txt = f"chưa tính được giá {n_cost_items} mục"
+        else:
+            cost_txt = cost_text({"monthly": sum_m})
+            if len(priced) < n_cost_items:
+                cost_txt += f" (chưa tính được giá {n_cost_items - len(priced)} mục)"
         pairs = [(summary_lbl[sec], counts[sec]) for sec in SUMMARY_ORDER
                  if not (sec == "IDLE" and IDLE_DAYS <= 0)]
-        pairs.append(("Ước tính chi phí hằng tháng", cost_txt))
+        pairs.append(("Ước tính tài nguyên đang chạy", cost_txt))
         lines.extend("  " + l for l in field_lines(pairs))
         lines.append("")
 
