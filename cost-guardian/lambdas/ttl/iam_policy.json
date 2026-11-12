@@ -19,7 +19,7 @@
       "Resource": "arn:aws:ec2:*:<ACCOUNT_ID>:instance/*",
       "Condition": {
         "Null": {
-          "ec2:ResourceTag/TTL": "false",
+          "aws:ResourceTag/TTL": "false",
           "ec2:ResourceTag/aws:autoscaling:groupName": "true"
         }
       }
