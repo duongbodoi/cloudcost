@@ -4,6 +4,8 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 
+from notify import bullet, field_lines, fmt_time, send
+
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.INFO)
 
@@ -172,50 +174,54 @@ class Worker:
                 self.error(name, region, exc)
         self.result["regions_scanned"].append(region)
 
-    def finish(self, sns, topic):
-        LOG.info("TTL result: %s", json.dumps(self.result, ensure_ascii=False))
-        if not self.dry and (self.result["stop_requested"] or self.result["errors"]):
-            vn = self.now.astimezone(timezone(timedelta(hours=7)))
-            lines = [
-                "Báo cáo TTL - Cloud Cost Guardian",
-                "Thời gian: " + vn.strftime("%Y-%m-%d %H:%M:%S (UTC+7)"),
-                "Yêu cầu dừng đã được AWS chấp nhận (có thể vẫn đang Stopping):",
-            ]
-            lines.extend(
-                f"  - {item['type']} {item['id']} | Region: {item['region']}"
-                for item in self.result["stop_requested"]
-            )
-            if not self.result["stop_requested"]:
-                lines.append("  - Không có.")
+    def finish(self, topic):
+        # notify.py dùng chung chịu trách nhiệm bỏ dấu/cắt tiêu đề và gửi SNS.
+        actions = self.result["would_stop"] if self.dry else self.result["stop_requested"]
+        self.result["notification"] = None
+        if actions or self.result["errors"]:
+            lines = ["Báo cáo TTL - Cloud Cost Guardian"]
+            lines.extend(field_lines([
+                ("Thời gian", fmt_time(self.now)),
+                ("Chế độ", "Chạy thử, không thay đổi tài nguyên" if self.dry else "Chạy thật"),
+            ]))
+            lines.extend(["", "Tài nguyên sẽ được yêu cầu dừng:" if self.dry else
+                          "Yêu cầu dừng đã được AWS chấp nhận (có thể vẫn đang Stopping):"])
+            lines.extend(bullet(
+                f"{item['type']} {item['id']} | Region: {item['region']}" for item in actions
+            ))
+            if not actions:
+                lines.extend(bullet(["Không có."]))
             lines.append("Lỗi:")
-            lines.extend(
-                f"  - {item['region']}/{item['resource']}: {item['error']}"
+            lines.extend(bullet(
+                f"{item['region']}/{item['resource']}: {item['error']}"
                 for item in self.result["errors"]
-            )
+            ))
             if not self.result["errors"]:
-                lines.append("  - Không có.")
+                lines.extend(bullet(["Không có."]))
             message = "\n".join(lines)
             if len(message.encode("utf-8")) > 240000:
                 message = message.encode("utf-8")[:238000].decode("utf-8", errors="ignore")
                 message += "\n[Nội dung đã rút gọn; xem đầy đủ trong CloudWatch Logs.]"
-            stopped_count = len(self.result["stop_requested"])
+            stopped_count = len(actions)
             error_count = len(self.result["errors"])
             if stopped_count:
-                subject = f"[Cost-Guardian][TTL] Da dung {stopped_count} tai nguyen het han"
+                content = f"Đã dừng {stopped_count} tài nguyên hết hạn"
             else:
-                subject = f"[Cost-Guardian][TTL] Loi xu ly TTL ({error_count})"
-            sns.publish(TopicArn=topic, Subject=subject[:99], Message=message)
+                content = f"Lỗi xử lý TTL ({error_count})"
+            self.result["notification"] = send(
+                "TTL", content, message.split("\n"), topic_arn=topic, dry_run=self.dry)
+        LOG.info("TTL result: %s", json.dumps(self.result, ensure_ascii=False))
         return self.result
 
 
-def run(event, ec2, rds, sns, topic_arn, account_id):
-    """Single-region entry for offline fixture tests, allowing a fixed clock."""
+def run(event, ec2, rds, topic_arn, account_id):
+    """Chạy một Region với client giả lập và đồng hồ cố định để test offline."""
     worker = Worker(event, account_id)
     worker.scan(ec2, rds, rds.meta.region_name)
-    return worker.finish(sns, topic_arn)
+    return worker.finish(topic_arn)
 
 
-def run_regions(event, factory, regions, sns, topic, account, context=None):
+def run_regions(event, factory, regions, topic, account, context=None):
     worker = Worker(event, account, context)
     for region in dict.fromkeys(regions):
         try:
@@ -223,7 +229,7 @@ def run_regions(event, factory, regions, sns, topic, account, context=None):
             worker.scan(factory("ec2", region), factory("rds", region), region)
         except Exception as exc:
             worker.error("Region scan", region, exc)
-    return worker.finish(sns, topic)
+    return worker.finish(topic)
 
 
 def lambda_handler(event, context):
@@ -251,7 +257,6 @@ def lambda_handler(event, context):
     def factory(service, region):
         return boto3.client(service, region_name=region, config=config)
 
-    sns = factory("sns", home)
     regions = [home]
     if all_regions == "true":
         try:
@@ -263,7 +268,7 @@ def lambda_handler(event, context):
         except Exception as exc:
             worker = Worker(event, parts[4], context)
             worker.error("Region discovery", home, exc)
-            return worker.finish(sns, topic)
+            return worker.finish(topic)
 
     LOG.info("TTL regions: %s", regions)
-    return run_regions(event, factory, regions, sns, topic, parts[4], context)
+    return run_regions(event, factory, regions, topic, parts[4], context)
