@@ -1,0 +1,115 @@
+{
+  "DBClusters": [
+    {
+      "DBClusterIdentifier": "aurora-expired",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-expired",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "available",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-valid",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-valid",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "available",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T09:45:00Z"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-first-seen",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-first-seen",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "available",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-stopped",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-stopped",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "stopped",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-serverless-v1",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-serverless-v1",
+      "Engine": "aurora-mysql",
+      "EngineMode": "serverless",
+      "Status": "available",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-busy",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-busy",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "modifying",
+      "TagList": [
+        {
+          "Key": "TTL",
+          "Value": "30m"
+        },
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "DBClusterIdentifier": "aurora-no-ttl",
+      "DBClusterArn": "arn:aws:rds:us-east-1:123456789012:cluster:aurora-no-ttl",
+      "Engine": "aurora-mysql",
+      "EngineMode": "provisioned",
+      "Status": "available",
+      "TagList": [
+        {
+          "Key": "TTL-Start",
+          "Value": "2026-11-12T08:00:00Z"
+        }
+      ]
+    }
+  ]
+}
