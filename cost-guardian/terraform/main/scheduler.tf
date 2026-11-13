@@ -34,8 +34,3 @@ resource "aws_iam_role_policy" "scheduler" {
   policy = data.aws_iam_policy_document.scheduler_invoke.json
 }
 
-# Nhận role tạo tay ở Giai đoạn 1 vào Terraform, thay vì tạo trùng tên
-import {
-  to = aws_iam_role.scheduler
-  id = "cg-scheduler-role"
-}
