@@ -1,0 +1,124 @@
+{
+  "_mo_ta": "Fixture pytest cho tests/test_idle.py (bai C1). A: 7 ngay deu < 5% -> idle; B: moi chay 3 ngay -> khong xet; C: co 1 ngay 6% -> khong idle.",
+  "now": "2026-11-12T00:00:00Z",
+  "cpu_threshold": 5,
+  "days": 7,
+  "expected_instance_ids": [
+    "i-0000000000000000a"
+  ],
+  "ec2": {
+    "Reservations": [
+      {
+        "Instances": [
+          {
+            "InstanceId": "i-0000000000000000a",
+            "InstanceType": "t3.micro",
+            "State": {
+              "Name": "running",
+              "Code": 16
+            },
+            "LaunchTime": "2026-11-01T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Owner",
+                "Value": "Chien"
+              },
+              {
+                "Key": "Name",
+                "Value": "A"
+              }
+            ]
+          },
+          {
+            "InstanceId": "i-0000000000000000b",
+            "InstanceType": "t3.micro",
+            "State": {
+              "Name": "running",
+              "Code": 16
+            },
+            "LaunchTime": "2026-11-09T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Owner",
+                "Value": "Chien"
+              },
+              {
+                "Key": "Name",
+                "Value": "B"
+              }
+            ]
+          },
+          {
+            "InstanceId": "i-0000000000000000c",
+            "InstanceType": "t3.micro",
+            "State": {
+              "Name": "running",
+              "Code": 16
+            },
+            "LaunchTime": "2026-11-01T00:00:00Z",
+            "Tags": [
+              {
+                "Key": "Owner",
+                "Value": "Chien"
+              },
+              {
+                "Key": "Name",
+                "Value": "C"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "cloudwatch": {
+    "MetricDataResults": [
+      {
+        "Id": "cpu0",
+        "Label": "i-0000000000000000a",
+        "StatusCode": "Complete",
+        "Timestamps": [
+          "2026-11-05T00:00:00Z",
+          "2026-11-06T00:00:00Z",
+          "2026-11-07T00:00:00Z",
+          "2026-11-08T00:00:00Z",
+          "2026-11-09T00:00:00Z",
+          "2026-11-10T00:00:00Z",
+          "2026-11-11T00:00:00Z"
+        ],
+        "Values": [
+          1.0,
+          2.0,
+          1.0,
+          3.0,
+          2.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "Id": "cpu1",
+        "Label": "i-0000000000000000c",
+        "StatusCode": "Complete",
+        "Timestamps": [
+          "2026-11-05T00:00:00Z",
+          "2026-11-06T00:00:00Z",
+          "2026-11-07T00:00:00Z",
+          "2026-11-08T00:00:00Z",
+          "2026-11-09T00:00:00Z",
+          "2026-11-10T00:00:00Z",
+          "2026-11-11T00:00:00Z"
+        ],
+        "Values": [
+          1.0,
+          1.0,
+          1.0,
+          6.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  }
+}

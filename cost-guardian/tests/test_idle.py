@@ -19,7 +19,7 @@ FILTER = {"Filters": [{"Name": "instance-state-name", "Values": ["running"]}]}
 
 def load_case():
     """Đổi thời gian JSON thành datetime đúng kiểu boto3."""
-    data = json.loads((ROOT / "test_events/scan/fixtures/idle_cpu_c1.json").read_text(encoding="utf-8"))
+    data = json.loads((ROOT / "test_events/scan/fixtures/idle_cpu_c1_pytest.json").read_text(encoding="utf-8"))
     data["now"] = datetime.fromisoformat(data["now"].replace("Z", "+00:00"))
     for instance in data["ec2"]["Reservations"][0]["Instances"]:
         instance["LaunchTime"] = datetime.fromisoformat(instance["LaunchTime"].replace("Z", "+00:00"))
